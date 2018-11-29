@@ -1,0 +1,88 @@
+- name: "Installing software"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - emacs
+  - vim
+  - iptables-persistent 
+  - fail2ban
+  - portsentry
+  - apache2
+  - openssl
+
+- name: "sshd_config"
+  copy:
+    src: /home/user1/files/sshd_config
+    dest: /etc/ssh/sshd_config
+    mode: 0755
+
+- name: "ip static"
+  copy:
+    src: /home/user1/files/interfaces
+    dest: /etc/network/interfaces
+    mode: 0755
+
+- name: "iptables rules (ip v4)"
+  copy:
+    src: /home/user1/files/rules.v4
+    dest: /etc/iptables/rules.v4
+    mode: 0755
+
+- name: "iptables rules (ip v6)"
+    src: /home/user1/files/rules.v6
+    dest: /etc/iptables/rules.v6
+    mode: 0755
+
+- name: "fail2ban config"
+  copy:
+    src: /home/user1/files/jail.local
+    dest: /etc/fail2ban/jail.local
+    mode: 0755
+
+- name: "port sentry config"
+  copy:
+    src: /home/user1/files/portsentry.conf
+    dest: /etc/portsentry/portsentry.conf
+    mode: 0755
+
+- name: "port sentry config"
+  copy:
+    src: /home/user1/files/portsentry
+    dest: /etc/default/portsentry
+    mode: 0755
+
+- name: "update script"
+  copy:
+    src: /home/user1/files/update_system.sh
+    dest: /root/update_system.sh
+    mode: 0755
+
+- name: "crontab script"
+  copy:
+    src: /home/user1/files/check_crontab.sh
+    dest: /root/check_crontab.sh
+    mode: 0755
+
+- name: "change root mailbox"
+  copy:
+    src: /home/user1/files/aliases
+    dest: /etc/aliases
+    mode: 0755
+
+- name: "contab files"
+  copy:
+    src: /home/user1/files/crontab
+    dest: /etc/crontab
+    mode: 0755
+
+- name: "adding crontab rules"
+  shell: crontab < /etc/crontab
+    
+
+- name: "ssl script"
+  copy:
+    src: /home/user1/files/ssl.sh
+    dest: /root/ssl.sh
+    mode: 0777
+
+- name: "reboot"
+  reboot:
